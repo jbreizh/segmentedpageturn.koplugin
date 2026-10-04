@@ -310,4 +310,14 @@ function SegmentedPageTurn:addToMainMenu(menu_items)
     })
 end
 
+function SegmentedPageTurn:deletePluginSettings()
+    logger.info("[SegmentedPageTurn] deletePluginSettings: removing all plugin data")
+     local settings_keys = {
+        "swipe_animations",
+    }
+    for _i, key in ipairs(settings_keys) do
+        G_reader_settings:delSetting(key)
+    end
+end
+
 return SegmentedPageTurn
