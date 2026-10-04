@@ -166,7 +166,7 @@ function SegmentedPageTurn:onPageUpdate(new_page, orig_mode)
         forward = not forward
     end
     self:arm(forward)
-    logger.info("SegmentedPageTurn: armed", forward and "forward" or "backward", "page turn")
+    logger.dbg("SegmentedPageTurn: armed", forward and "forward" or "backward", "page turn")
 end
 
 function SegmentedPageTurn:refreshSegmentedPageTurn(fb, x, y, w, h, dither)
@@ -175,19 +175,19 @@ function SegmentedPageTurn:refreshSegmentedPageTurn(fb, x, y, w, h, dither)
         return false
     end
     if not self:isEnabled() then
-        logger.info("SegmentedPageTurn: discarded pending turn; animation setting is off")
+        logger.dbg("SegmentedPageTurn: discarded pending turn; animation setting is off")
         return false
     end
     if #UIManager._refresh_stack ~= 1 then
-        logger.info("SegmentedPageTurn: discarded pending turn; refresh queue has", #UIManager._refresh_stack, "entries")
+        logger.dbg("SegmentedPageTurn: discarded pending turn; refresh queue has", #UIManager._refresh_stack, "entries")
         return false
     end
     if self:isColorContentUpdate(fb) then
-        logger.info("SegmentedPageTurn: discarded pending turn; color content needs KOReader's Kaleido waveform")
+        logger.dbg("SegmentedPageTurn: discarded pending turn; color content needs KOReader's Kaleido waveform")
         return false
     end
     if dither or x ~= 0 or y ~= 0 or w ~= fb.bb:getWidth() or h ~= fb.bb:getHeight() then
-        logger.info("SegmentedPageTurn: discarded pending turn; refresh is not a plain full-screen partial update")
+        logger.dbg("SegmentedPageTurn: discarded pending turn; refresh is not a plain full-screen partial update")
         return false
     end
 
@@ -236,7 +236,7 @@ function SegmentedPageTurn:refreshSegmentedPageTurn(fb, x, y, w, h, dither)
             fb.dont_wait_for_marker = marker
         end
     end
-    logger.info("SegmentedPageTurn: submitted", #edges - 1, "HWTCON bands")
+    logger.dbg("SegmentedPageTurn: submitted", #edges - 1, "HWTCON bands")
     return true
 end
 
