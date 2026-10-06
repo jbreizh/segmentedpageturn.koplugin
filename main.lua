@@ -16,6 +16,8 @@ local lfs = require("libs/libkoreader-lfs")
 local UIManager = require("ui/uimanager")
 local WidgetContainer = require("ui/widget/container/widgetcontainer")
 local logger = require("logger")
+local Dispatcher = require("dispatcher")
+local Notification = require("ui/widget/notification")
 local _ = require("gettext")
 
 local Screen = Device.screen
@@ -284,6 +286,7 @@ function SegmentedPageTurn:init()
     active_plugin = self
     install_hooks()
     self.ui.menu:registerToMainMenu(self)
+    self:onDispatcherRegisterActions()
     logger.info("SegmentedPageTurn: initialized; HWTCON backend detected")
 end
 
@@ -310,14 +313,19 @@ function SegmentedPageTurn:addToMainMenu(menu_items)
     })
 end
 
-function SegmentedPageTurn:deletePluginSettings()
-    logger.info("[SegmentedPageTurn] deletePluginSettings: removing all plugin data")
-     local settings_keys = {
-        "swipe_animations",
-    }
-    for _i, key in ipairs(settings_keys) do
-        G_reader_settings:delSetting(key)
-    end
+function SegmentedPageTurn:onDispatcherRegisterActions()
+    Dispatcher:registerAction("toggle_segmented_page_turn", {
+        category = "none",
+        event = "ToggleSegmentPageTurn",
+        title = "SegmentPageTurn : " .. _("Toggle page turn animations"),
+        reader = true,
+        condition = has_hwtcon_backend()
+    })
+end
+
+function SegmentedPageTurn:onToggleSegmentPageTurn()
+    G_reader_settings:flipNilOrFalse("swipe_animations")
+    Notification:notify(_("Toggle page turn animations"))
 end
 
 return SegmentedPageTurn
