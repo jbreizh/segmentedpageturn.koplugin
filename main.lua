@@ -316,14 +316,14 @@ end
 function SegmentedPageTurn:onDispatcherRegisterActions()
     Dispatcher:registerAction("toggle_segmented_page_turn", {
         category = "none",
-        event = "ToggleSegmentPageTurn",
-        title = "SegmentPageTurn : " .. _("Toggle page turn animations"),
+        event = "ToggleSegmentedPageTurn",
+        title = "SegmentedPageTurn: " .. _("Toggle page turn animations"),
         reader = true,
         condition = has_hwtcon_backend()
     })
 end
 
-function SegmentedPageTurn:onToggleSegmentPageTurn()
+function SegmentedPageTurn:onToggleSegmentedPageTurn()
     G_reader_settings:flipNilOrFalse("swipe_animations")
     Notification:notify(_("Toggle page turn animations"))
 end
